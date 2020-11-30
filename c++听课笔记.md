@@ -169,11 +169,43 @@ implementing实现
 
 
 
+# Class 4:2nd
 
+## Adding Constructors & Destructors
 
+Constructors构造 ；Destructors破坏；任何Class都有Constructors ； 
 
+The constructor can **take parameters** as needed, but it **cannot have a** **return value, not even void**  
 
+```c++
+Cat(int initAge);
+~Cat();一个是构造一个是拆除，两个只有一个参数initAge
+```
 
+默认的Constructors是没有参数，而此时已经有写上参数，没有参数的为 Default Constructor
+
+```c++
+Cat::Cat(int initAge)
+{
+itsAge = initAge
+itsWeight = -1
+}
+```
+
+```c++
+Cat frisky(5);
+frisky.meow();
+```
+
+## Including *const* Member Functions
+
+const 常量 做函数后尽量不修改数据
+
+compiliy error 编译出错; runtime error运行出错，最好是编译出错
+
+**setAge() cannot be const** because it changes the member variable itsAge
+
+**getAge()**, on the other hand, **can and should be const** because it does not change the class at all   只读的最好加上const，这样不会改写，好处在于后面不会被修改
 
 
 
@@ -581,11 +613,61 @@ Mammal(rhs)
 
 
 
+# Class 18 
 
+## Macro Functions 
 
+Data safety | sacurity  ,  Data safety: 数据的conversion Correctness  ;  computer security ; programing 
 
+different type: Assignement or Conversion ;  program : Compiling Time or Runtime
 
+The preprocessor and the Compiler ;  #define TWICE(X) ((X)*2)
 
+## A macro can have Macro Functions , and each parameter can be used repeatedly in the replacement text
+
+```c++
+#define Max(x,y) ((x)>(y)?(x):(y))
+#define Min(x,y) ((x)>(y)?(x):(y))
+```
+
+opening parenthese 左小括号  ； closing parenthese 右小括号 ;  C语言是大小写敏感的
+
+## The preprocessor is not as forgiving of whitespaces as is the compiler
+
+不能在函数后头和函数表直接有空格，因为没有语法词法的分析
+
+## Why All the parenthese?
+
+CUBE立方体 
+
+~~~c++
+#define CUBE(a) ((a)*(a)*(a))
+#define THREE(a) a*a*a
+y=CUBE(a+b)
+z=THREE(a+b)
+~~~
+
+此时Z的值会出现问题，因为THREE没有加括号
+
+## How macros&poor type safety GO Hand-in-Hand
+
+Macros Versus Functions and Templates 
+
+Macros suffer from four peoblems in C++
+
+confusing迷惑 ； tricky 诡计多端
+
+Threrfore,it is unavailable in most debuggers 
+
+大多数调试器会把宏去掉而进行调试
+
+Macros are not type safe 可能让程序在运行时出错
+
+anathema讨厌的 ； absolute value绝对值 ； undermine暗中破坏
+
+## Inline Functions 
+
+An Introduction to Templates 定义函数时也定义可变的类型，让函数更多多元化
 
 
 
