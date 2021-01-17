@@ -209,6 +209,44 @@ compiliy error 编译出错; runtime error运行出错，最好是编译出错
 
 
 
+# Class 5 ;1st
+
+## Where to Put Class Declarations & Method Definitions
+
+scalable scale规模大小  Definitions声明定义  interface 
+
+Scalable :Convent ;rule 
+
+# Where to Put Class Declarations & Method 
+
+Definitions
+
+# Where to Put Class Declarations & Method 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -668,6 +706,246 @@ anathema讨厌的 ； absolute value绝对值 ； undermine暗中破坏
 ## Inline Functions 
 
 An Introduction to Templates 定义函数时也定义可变的类型，让函数更多多元化
+
+
+
+# Class 20 lecture 8 -Threading
+
+## What is Concurrency?
+
+Concurrency occurs when multiple copies of a program run simultaneously while communicating with each other.
+
+Simply put ,concurrency is when two tasks are oberlapped.
+
+A simple concurrent application uses a single machine to store the program's instruction, but that process is executed by multiple different threads.
+
+overlapped 互相覆盖，互相有交集 ； 并发的程序是完全独立的，只是可能存在程序间的交互，所有经典的程序都是异步运行
+
+传统的程序设计技术是：
+
+```mermaid
+graph LR
+	A(main) --> B(function) --> C(function) --> D(function) --> E(Exit)
+```
+
+现代的程序设计技术是  ex:Go 默认是并发性语言
+
+```mermaid
+graph TD
+A(main) --> B1(function)
+A(main) --> B2(function)
+A(main) --> B3(function)
+B1 --> D(Exit)
+B2 --> D(Exit)
+B3 --> D(Exit)
+```
+
+尽量不用并发技术而用其他的替代，例如做游戏的时候用game engire 
+
+A date race is a common issue you may encounter in C++ concurrency and mmulti-threaded processes
+
+Data races in C++ occur when at least two threads can simultaneously acccess a variable or memory location, and at least of those threads tries to access that variable 
+
+This can result in undefined behavior 
+
+Regardless of its challenges, concurrency is very important for handling multiple tasks at once
+
+race 竞争 在同步与异步之间寻找平衡 ; handle/process 处理
+
+``` c++
+#include<thread>//利用thread
+
+void hello()
+{
+    std::cout << "Hello Concurrent World\n";
+    
+}
+
+int main()
+{
+    std::thread t(hello);//生成Object/class,定义了一个t,应该用大写
+    t.join();
+}
+```
+
+join() 合并; fork()分叉; synchronize同步,如果join执行的不彻底的话会造成有些线程还活着，对线程失去控制。
+
+# Hello Concurrent World
+
+The first difference is the extra #include<thread>
+
+Second,the code for writing the message has been moved to a separate function because every thread has to have an initial function, where the new thread of execution begins
+
+Third, rather than writing directly to standard output or calling hello() from main(), this program launches a new thread to do it ,bringing the thread count to two
+
+The initial thread that starts at main()
+
+The new thread that starts at hello()
+
+After the new thread has been launched, the inital thread continues execution
+
+If it did not wait for the new thread to finish , it would merrily (cheerful and lively) continue to the end of main() and end the program -possibly before the new thread had a chance to run
+
+This is why the call to join（） is there
+
+This causes the calling thread to wait for the thread associated with the std::thread object, in this case
+
+launches发射
+
+# Managing Threads 
+
+The C++ Standard Library makes most thread-management tasks relatively easy, with almost everything managed through the  std::thread object associated with a given thread 
+
+For those tasks that are not so straightforword ,the library provides the flexibility to build what you need from the basic building blocks
+
+```c++
+struct func{
+    int &i;
+    
+    func(int &i_):i(i_)
+    {
+    }
+    
+    void operator()()
+    {
+        for(unsigned j=0;j<1000000;++j)
+        {
+            do_something(i);
+        }
+    }
+};
+```
+
+underscore下划线 （26+26+1+10）63个字符可以给变量起名字，尽量用长名字
+
+
+
+# 2020.12.14
+
+## Running Threads in the Background
+
+### Consider an application such as a word peocessor that can edit multiple documents at once
+
+### One way to handle this internally is to run each document-editing window in its own thread
+
+### Each thread runs the same code but with different data relaing to the document being edited and the corresponding window peperties
+
+### Opending a new document therefore requires starting a new thread
+
+peperties属性
+
+foreground功能性  Backgrond非功能性，保证安全，性能提升
+
+
+
+# Passing Arguments to a Thread Function
+
+## According the previous examples, passing arguments to the callable object or function is fundamentally as simole as passing additional arguments to the std::thread constructor
+
+## But it is improtant to bear in mind that by default the arguments are copied into internal storage , where they can be accessed by the nwely created thread of execution , and the passed to the callable object of function as r-values
+
+## This is done even if the corresponding parameter in the function is expecting a reference 
+
+```c++
+void f (int i ,std::string const& s);
+std::thread t (f,3,"Hello");
+```
+
+
+
+# Sharing Data Between Threads 
+
+## if you are sharing data between threads, you need to rules for
+
+Which thread can access which bit of data
+
+when and how any updatas are communicated to the other threads that care about that data
+
+The ease with which data can be shared betwwen multiple threads in a single process is not only a benefit - it can also be a big drawback
+
+asynchrows    squchrowous
+
+modifying修改
+
+
+
+# Protecting Shared Data with Mutexes
+
+it is nice if you could mark all the pieces of code that access the data structure as mutually exclusive such that if any thread is running one of them, any other thread that tries to access that data structure has to wait until the first thread is finished
+
+That makes it impossible for a thread to see a broken invariant except when it is 
+
+
+
+# CLASS 21
+
+engines:program 程序 process 进程
+
+detach 彻底剪短
+
+管理线程（功能性）fore ground, background
+
+nonfuction function poteniat可能的
+
+dailing程序回收时而其他后续进程还在使用
+
+执行main是foreground detach是为转background
+
+terminating终端
+
+``` c++ 
+#include <unistd.h>
+```
+
+in this case, the new thread associated with my-thread is probaby still running when opps() exits bacause you have explicitly decided not to wait for it by calling detach()
+
+if the threads is still running, the next call to do_somethingg (i) accesses an already destroyed variable
+
+it is easy to make the mistake with multithreaded code bacause it is not necessiarity immediately apparent that this has happened 
+
+implicit 隐藏
+
+one common way to handle this scenario is to make the thread function self-contained and copy the data into the thread rather than sharing the  data
+
+it is a bad idea to create a thread within  a function that has access to the local variables in that function unless the thread is guaranteed to finish before the function exits
+
+you can ensure that the thread has completed execution before the function exits by joining with the thread.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
